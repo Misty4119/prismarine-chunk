@@ -113,7 +113,7 @@ module.exports = Block => {
       this.data.write(smartBuffer)
     }
 
-    static fromLocalPalette ({ data, palette, noSizePrefix, hasFluidCount }) {
+    static fromLocalPalette ({ data, palette, noSizePrefix, hasFluidCount, maxBitsPerBlock }) {
       return new ChunkSection({
         noSizePrefix,
         hasFluidCount,
@@ -128,7 +128,8 @@ module.exports = Block => {
           : new IndirectPaletteContainer({
             noSizePrefix,
             data,
-            palette
+            palette,
+            maxBitsPerBlock
           })
       })
     }
@@ -140,7 +141,12 @@ module.exports = Block => {
         fluidCount = smartBuffer.readInt16BE()
       }
       const bitsPerBlock = smartBuffer.readUInt8()
-      if (bitsPerBlock > 16) throw new Error(`Bits per block is too big: ${bitsPerBlock}`)
+      // The wire value is a u8, but accepting arbitrary values would let a
+      // malformed packet request an oversized bit array. Keep the protocol's
+      // historical 16-bit ceiling while allowing a data set whose global
+      // palette legitimately needs more bits.
+      const maxSupportedBits = Math.max(16, maxBitsPerBlock)
+      if (bitsPerBlock > maxSupportedBits) throw new Error(`Bits per block is too big: ${bitsPerBlock}`)
       // Case 1: Single Value Container (all blocks in the section are the same)
       if (bitsPerBlock === 0) {
         const section = new ChunkSection({

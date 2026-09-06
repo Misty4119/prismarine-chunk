@@ -8,6 +8,7 @@ const prismarineBlockLoader = require('prismarine-block')
 const chunkLoader = require('../index')
 const SingleValueContainer = require('../src/pc/common/PaletteContainer').SingleValueContainer
 const constants = require('../src/pc/common/constants')
+const SmartBuffer = require('smart-buffer').SmartBuffer
 const { performance } = require('perf_hooks')
 const { pcVersions, pcCycleTests } = require('./versions')
 const expect = require('expect').default
@@ -84,6 +85,23 @@ pcVersions.forEach((version) => describe(`Chunk implementation for minecraft ${v
       assert.strictEqual(15, chunk2.getSkyLight(new Vec3(0, 0, 0)))
     }
   })
+
+  if (version === '26.2') {
+    it('tracks fluid count and rejects oversized section palettes', function () {
+      const chunk = new Chunk()
+      assert.strictEqual(chunk.sections[0].hasFluidCount, true)
+      assert.strictEqual(chunk.maxBitsPerBlock, 15)
+
+      const malformed = Buffer.alloc(5)
+      malformed.writeInt16BE(0, 0)
+      malformed.writeInt16BE(0, 2)
+      malformed.writeUInt8(17, 4)
+      assert.throws(
+        () => Chunk.section.read(SmartBuffer.fromBuffer(malformed), chunk.maxBitsPerBlock, true, true),
+        /Bits per block is too big/
+      )
+    })
+  }
 
   it('Block light set/get', function () {
     const chunk = new Chunk()

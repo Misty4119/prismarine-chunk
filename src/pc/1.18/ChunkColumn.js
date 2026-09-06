@@ -319,6 +319,7 @@ module.exports = (Block, mcData) => {
       this.sections[y + minCY] = ChunkSection.fromLocalPalette({
         noSizePrefix,
         hasFluidCount,
+        maxBitsPerBlock: this.maxBitsPerBlock,
         data: BitArray.fromLongArray(blockStates.data || {}, blockStates.bitsPerBlock),
         palette: blockStates.palette
           .map(e => Block.fromProperties(e.Name.replace('minecraft:', ''), e.Properties || {}) ?? raiseUnknownBlock(e))
