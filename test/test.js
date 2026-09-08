@@ -95,7 +95,7 @@ pcVersions.forEach((version) => describe(`Chunk implementation for minecraft ${v
       const malformed = Buffer.alloc(5)
       malformed.writeInt16BE(0, 0)
       malformed.writeInt16BE(0, 2)
-      malformed.writeUInt8(17, 4)
+      malformed.writeUInt8(16, 4)
       assert.throws(
         () => Chunk.section.read(SmartBuffer.fromBuffer(malformed), chunk.maxBitsPerBlock, true, true),
         /Bits per block is too big/

@@ -142,11 +142,9 @@ module.exports = Block => {
       }
       const bitsPerBlock = smartBuffer.readUInt8()
       // The wire value is a u8, but accepting arbitrary values would let a
-      // malformed packet request an oversized bit array. Keep the protocol's
-      // historical 16-bit ceiling while allowing a data set whose global
-      // palette legitimately needs more bits.
-      const maxSupportedBits = Math.max(16, maxBitsPerBlock)
-      if (bitsPerBlock > maxSupportedBits) throw new Error(`Bits per block is too big: ${bitsPerBlock}`)
+      // malformed packet request an oversized bit array. The data set's
+      // global palette width is also the upper bound for the direct palette.
+      if (bitsPerBlock > maxBitsPerBlock) throw new Error(`Bits per block is too big: ${bitsPerBlock}`)
       // Case 1: Single Value Container (all blocks in the section are the same)
       if (bitsPerBlock === 0) {
         const section = new ChunkSection({
