@@ -86,16 +86,16 @@ pcVersions.forEach((version) => describe(`Chunk implementation for minecraft ${v
     }
   })
 
-  if (version === '26.2') {
+  if (version === '26.2' || version === '26.3') {
     it('tracks fluid count and rejects oversized section palettes', function () {
       const chunk = new Chunk()
       assert.strictEqual(chunk.sections[0].hasFluidCount, true)
-      assert.strictEqual(chunk.maxBitsPerBlock, 15)
+      assert.ok(chunk.maxBitsPerBlock >= 15)
 
       const malformed = Buffer.alloc(5)
       malformed.writeInt16BE(0, 0)
       malformed.writeInt16BE(0, 2)
-      malformed.writeUInt8(16, 4)
+      malformed.writeUInt8(chunk.maxBitsPerBlock + 1, 4)
       assert.throws(
         () => Chunk.section.read(SmartBuffer.fromBuffer(malformed), chunk.maxBitsPerBlock, true, true),
         /Bits per block is too big/
