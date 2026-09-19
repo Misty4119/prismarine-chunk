@@ -8,8 +8,18 @@
 
 [![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/prismarine-chunk)
 
-A class to hold chunk data for Minecraft: PC 1.8, 1.9, 1.10, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16 and 26.1 and Bedrock Edition 0.14 and 1.0, 1.16, 1.17, 1.18, 1.19, 1.20 and 1.21
+A class to hold chunk data for Minecraft Java Edition 1.8 through 1.21 and 26.1, 26.2, and 26.3, and Bedrock Edition 0.14, 1.0, 1.16, 1.17, 1.18, 1.19, 1.20, and 1.21. See src/index.js for the exact dispatch table.
 
+## Installation and repository guides
+
+Install the published package with npm install prismarine-chunk. The Java 26.2 and 26.3 implementations in this source tree are newer than the current published package; use the sibling checkout described in CONTEXT.md when reproducing those changes.
+
+- [Agent instructions](AGENTS.md)
+- [Repository context](CONTEXT.md)
+- [Security policy](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+
+For development, run npm install, npm run lint, and npm test from the repository root. The TypeScript declarations in types/index.d.ts and the PC/Bedrock fixtures are part of the public compatibility contract.
 ## Usage
 
 ```js
