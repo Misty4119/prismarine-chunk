@@ -103,6 +103,22 @@ pcVersions.forEach((version) => describe(`Chunk implementation for minecraft ${v
     })
   }
 
+  if (version === '26.3') {
+    it('loads byte-array light masks used by the 26.3 protocol', function () {
+      const chunk = new Chunk({ minY: -64, worldHeight: 384 })
+      chunk.loadParsedLight(
+        [Buffer.alloc(2048)],
+        [],
+        Buffer.from([0x00, 0x02]),
+        Buffer.alloc(0),
+        Buffer.alloc(0),
+        Buffer.alloc(0)
+      )
+      assert.strictEqual(chunk.skyLightMask.get(9), 1)
+      assert.strictEqual(chunk.skyLightMask.get(8), 0)
+    })
+  }
+
   it('Block light set/get', function () {
     const chunk = new Chunk()
 

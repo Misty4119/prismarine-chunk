@@ -261,8 +261,8 @@ module.exports = (Block, mcData) => {
     loadParsedLight (skyLight, blockLight, skyLightMask, blockLightMask, emptySkyLightMask, emptyBlockLightMask) {
       function readSection (sections, data, lightMask, pLightMask, emptyMask, pEmptyMask) {
         let currentSectionIndex = 0
-        const incomingLightMask = BitArray.fromLongArray(pLightMask, 1)
-        const incomingEmptyMask = BitArray.fromLongArray(pEmptyMask, 1)
+        const incomingLightMask = protocolBitSetToBitArray(pLightMask)
+        const incomingEmptyMask = protocolBitSetToBitArray(pEmptyMask)
 
         for (let y = 0; y < sections.length; y++) {
           const isEmpty = incomingEmptyMask.get(y)
@@ -372,6 +372,26 @@ module.exports = (Block, mcData) => {
 
 function getLightSectionIndex (pos, minY) {
   return Math.floor((pos.y - minY) / 16) + 1
+}
+
+function protocolBitSetToBitArray (mask) {
+  if (Buffer.isBuffer(mask) || ArrayBuffer.isView(mask)) {
+    const bytes = Buffer.isBuffer(mask)
+      ? mask
+      : Buffer.from(mask.buffer, mask.byteOffset, mask.byteLength)
+    const bitArray = new BitArray({
+      capacity: bytes.length * 8,
+      bitsPerValue: 1
+    })
+    for (let byteIndex = 0; byteIndex < bytes.length; byteIndex++) {
+      const byte = bytes[byteIndex]
+      for (let bit = 0; bit < 8; bit++) {
+        if ((byte & (1 << bit)) !== 0) bitArray.set(byteIndex * 8 + bit, 1)
+      }
+    }
+    return bitArray
+  }
+  return BitArray.fromLongArray(mask, 1)
 }
 
 function toBiomePos (pos, minY) {
