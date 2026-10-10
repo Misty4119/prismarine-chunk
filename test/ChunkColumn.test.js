@@ -197,6 +197,19 @@ for (const version of allVersions) {
     })
 
     if (registry.type === 'pc' && registry.version['>=']('1.18')) {
+      it('preserves distinct empty light masks through JSON round-trip', () => {
+        const column = new ChunkColumn()
+        column.emptySkyLightMask.set(1, 1)
+        column.emptyBlockLightMask.set(2, 1)
+
+        const restored = ChunkColumn.fromJson(column.toJson())
+
+        assert.strictEqual(restored.emptySkyLightMask.get(1), 1)
+        assert.strictEqual(restored.emptySkyLightMask.get(2), 0)
+        assert.strictEqual(restored.emptyBlockLightMask.get(1), 0)
+        assert.strictEqual(restored.emptyBlockLightMask.get(2), 1)
+      })
+
       it('setBiome works below Y=0', () => {
         const column = new ChunkColumn()
         const biomeId = 1

@@ -88,11 +88,11 @@ module.exports = (Block, mcData) => {
         blockEntities: parsed.blockEntities,
 
         skyLightMask: BitArray.fromLongArray(parsed.skyLightMask, 1),
-        emptySkyLightMask: BitArray.fromLongArray(parsed.emptyBlockLightMask, 1),
+        emptySkyLightMask: BitArray.fromLongArray(parsed.emptySkyLightMask, 1),
         skyLightSections: parsed.skyLightSections.map(s => s === null ? null : BitArray.fromJson(s)),
 
         blockLightMask: BitArray.fromLongArray(parsed.blockLightMask, 1),
-        emptyBlockLightMask: BitArray.fromLongArray(parsed.emptySkyLightMask, 1),
+        emptyBlockLightMask: BitArray.fromLongArray(parsed.emptyBlockLightMask, 1),
         blockLightSections: parsed.blockLightSections.map(s => s === null ? null : BitArray.fromJson(s))
       })
     }

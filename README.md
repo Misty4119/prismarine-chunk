@@ -1,12 +1,12 @@
 # prismarine-chunk
 
 [![NPM version](https://img.shields.io/npm/v/prismarine-chunk.svg)](http://npmjs.com/package/prismarine-chunk)
-[![Build Status](https://github.com/PrismarineJS/prismarine-chunk/workflows/CI/badge.svg)](https://github.com/PrismarineJS/prismarine-chunk/actions?query=workflow%3A%22CI%22)
+[![Build Status](https://github.com/Misty4119/prismarine-chunk/actions/workflows/ci.yml/badge.svg)](https://github.com/Misty4119/prismarine-chunk/actions/workflows/ci.yml)
 [![Discord](https://img.shields.io/badge/chat-on%20discord-brightgreen.svg)](https://discord.gg/GsEFRM8)
 [![Gitter](https://img.shields.io/badge/chat-on%20gitter-brightgreen.svg)](https://gitter.im/PrismarineJS/general)
 [![Irc](https://img.shields.io/badge/chat-on%20irc-brightgreen.svg)](https://irc.gitter.im/)
 
-[![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/PrismarineJS/prismarine-chunk)
+[![Try it on gitpod](https://img.shields.io/badge/try-on%20gitpod-brightgreen.svg)](https://gitpod.io/#https://github.com/Misty4119/prismarine-chunk)
 
 A class to hold chunk data for Minecraft Java Edition 1.8 through 1.21 and 26.1, 26.2, and 26.3, and Bedrock Edition 0.14, 1.0, 1.16, 1.17, 1.18, 1.19, 1.20, and 1.21. See src/index.js for the exact dispatch table.
 
@@ -17,9 +17,11 @@ Install the published package with npm install prismarine-chunk. The Java 26.2 a
 - [Agent instructions](AGENTS.md)
 - [Repository context](CONTEXT.md)
 - [Security policy](SECURITY.md)
+- [Contributing guide](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 
-For development, run npm install, npm run lint, and npm test from the repository root. The TypeScript declarations in types/index.d.ts and the PC/Bedrock fixtures are part of the public compatibility contract.
+For development, run npm install, npm run lint, and npm test from the repository root. The TypeScript declarations in types/index.d.ts and the PC/Bedrock fixtures are part of the public compatibility contract. Java 26.3 uses the existing 1.18+ section implementation with protocol 777's byte-array light masks; Bedrock uses separate implementations.
+
 ## Usage
 
 ```js
@@ -53,7 +55,7 @@ Install it globally with `npm install minecraft-chunk-dumper -g` then run :
 
 ### bedrock
 
-Run tests in [bedrock-provider](https://github.com/PrismarineJS/bedrock-provider/) (which loads chunks through a client as part of its tests) and copy the generated data from `fixtures/$version/pchunk` into `tests/bedrock_$version`.
+Run tests in [bedrock-provider](https://github.com/PrismarineJS/bedrock-provider/) (which loads chunks through a client as part of its tests) and copy the generated data from `fixtures/$version/pchunk` into `test/bedrock_$version`.
 
 For the version, copy one chunk column of `level_chunk` without caching, `level_chunk` with caching, `level_chunk CacheMissResponse`, `subchunk` without caching, `subchunk cached` and `subchunk CacheMissResponse` into the test/version folder.
 
@@ -215,7 +217,7 @@ Load biomes into the chunk (starting from 1.15)
 
 ### bedrock
 
-See [index.d.ts](https://github.com/PrismarineJS/prismarine-chunk/blob/master/types/index.d.ts#L56)
+See [index.d.ts](types/index.d.ts)
 
 ## ChunkSection
 
@@ -244,7 +246,7 @@ See [index.d.ts](https://github.com/PrismarineJS/prismarine-chunk/blob/master/ty
 
 ### bedrock
 
-See [index.d.ts](https://github.com/PrismarineJS/prismarine-chunk/blob/master/types/index.d.ts#L56)
+See [index.d.ts](types/index.d.ts)
 
 #### compact()
 Shrinks the size of the SubChunk if possible after setBlock operations are done
