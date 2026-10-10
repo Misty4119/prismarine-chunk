@@ -24,6 +24,8 @@ jobs:
       uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run lint
     - name: Check out node-minecraft-data runtime
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -44,9 +46,9 @@ jobs:
         npm install
         npm run prepare
       working-directory: node-mcdata
-    - run: npm install
     - name: Install exact minecraft-data runtime
       run: npm install --no-save --package-lock=false ./node-mcdata
     - name: Run 26.3 chunk regression
       run: npx mocha test/ChunkColumn.test.js test/pc.test.js test/test.js --grep '26\.3' --exit
-    - run: npm test
+    - name: Run full Mocha suite
+      run: npx mocha --reporter spec --exit
